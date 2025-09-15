@@ -1,0 +1,17 @@
+# Client-specific ignore
+
+# Node modules
+node_modules/
+
+# Build folder
+build/
+
+# Env file
+.env
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+ 

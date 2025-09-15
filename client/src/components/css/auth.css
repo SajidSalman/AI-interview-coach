@@ -1,0 +1,60 @@
+.auth-section {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: #f9f9f9; /* adjust as per theme */
+  margin-top: 40px;
+}
+
+.auth-container {
+  background: white;
+  border-radius: 10px;
+  padding: 2.5rem;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-form label {
+  margin: 0.5rem 0 0.2rem;
+}
+
+.auth-form input {
+  padding: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.auth-form button {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  background-color: #007bff; /* use your brand color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.auth-form button:hover {
+  background-color: #0056b3;
+}
+
+.forgot-password {
+  text-align: center;
+ 
+  font-weight: bold;
+}
+.register-link{
+  text-align: center;
+}
+.error {
+  color: red;
+  margin-top: 0.5rem;
+}

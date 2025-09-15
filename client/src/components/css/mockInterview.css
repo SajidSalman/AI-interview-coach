@@ -1,0 +1,104 @@
+.start-interview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f9;
+}
+
+.start-interview-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: center;
+}
+
+.start-interview-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.start-input-label, .role-level-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+  text-align: left;
+}
+
+.start-textarea-box, 
+.start-input-box, 
+#role-level {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+#role-level {
+  cursor: pointer;
+  background: white;
+  appearance: none;
+}
+
+/* Ensuring Role Level Dropdown aligns properly */
+.role-level-container {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  width: 100%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.start-interview-button {
+  background: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+.start-interview-button:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+.start-interview-button:hover:not(:disabled) {
+  background: #0056b3;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.questions-container {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.questions-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.question-item {
+  background: #e9ecef;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+}

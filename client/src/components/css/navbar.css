@@ -1,0 +1,70 @@
+/* Navbar */
+.navbar {
+  padding: 15px 30px;
+  background: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Logo */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  transition: color 0.3s ease-in-out;
+}
+
+.logo {
+  height: 40px;
+  margin-right: 10px;
+}
+
+/* Navbar Links */
+.navbar-nav .nav-link {
+  color: black;
+  font-size: 16px;
+  padding: 12px 20px;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover Effect: Soft Bottom Glow */
+.navbar-nav .nav-link::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  width: 0;
+  height: 2px;
+  background: rgba(0, 0, 0, 0.6);
+  transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover::before {
+  width: 80%;
+  left: 10%;
+}
+
+/* Hover Effect: Slight Text Lift */
+.navbar-nav .nav-link:hover {
+  color: black;
+  transform: translateY(-2px);
+}
+
+/* Active Link */
+.navbar-nav .nav-link.active {
+  font-weight: bold;
+  opacity: 1;
+}
+
+/* Mobile Navbar */
+@media (max-width: 991px) {
+  .navbar-nav {
+    text-align: center;
+  }
+  .navbar-nav .nav-link {
+    padding: 10px;
+  }
+}

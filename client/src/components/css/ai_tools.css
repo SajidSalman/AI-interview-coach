@@ -1,0 +1,96 @@
+/* AI Tools Section */
+.ai-tools-section {
+  background: linear-gradient(135deg, #e2e2e2 0%, #636363 100%);
+  padding: 100px 20px;
+  text-align: center;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+/* Subtitle */
+.section-subtitle {
+  font-size: 1.2rem;
+  color: #444;
+  margin-bottom: 50px;
+}
+
+/* Tools Container */
+.tools-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+/* Individual Tool Card */
+.tool-card {
+  flex: 1;
+  max-width: 250px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 30px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: all 0.4s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.tool-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Tool Icon */
+.tool-icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 15px;
+}
+
+/* Tool Title */
+.tool-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #111;
+  margin-bottom: 10px;
+}
+
+/* Tool Description */
+.tool-description {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .tools-container {
+    flex-wrap: wrap;
+  }
+  
+  .tool-card {
+    max-width: 300px;
+    flex: 1 1 45%;
+  }
+}
+
+@media (max-width: 768px) {
+  .tools-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .tool-card {
+    max-width: 100%;
+  }
+}

@@ -1,0 +1,119 @@
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7fc;
+  margin: 0;
+  padding: 0;
+}
+
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  flex-direction: column; /* Ensure elements are stacked vertically */
+  margin-top: 50px;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 5px;  
+  text-align: center;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Form Styles */
+.register-form {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.register-form div {
+  margin-bottom: 15px;
+}
+
+label {
+  font-size: 1rem;
+  color: #555;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease-in-out;
+}
+
+input:focus {
+  border-color: #0066ff;
+  outline: none;
+  background-color: #e6f0ff;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background-color: #0066ff;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0052cc;
+}
+
+/* Error message styles */
+.error-message {
+  color: #d9534f;
+  font-size: 1rem;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Login redirect styles */
+.login-redirect {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.login-redirect span {
+  color: #0066ff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.login-redirect span:hover {
+  color: #0052cc;
+  text-decoration: none;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .register-container {
+    padding: 10px;
+  }
+
+  .register-form {
+    padding: 20px;
+    width: 60%;
+    max-width: 100%;
+  
+  }
+}

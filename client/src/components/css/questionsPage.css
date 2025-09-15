@@ -1,0 +1,138 @@
+/* questionsPage.css */
+
+.questions-container {
+  padding: 40px;
+  max-width: 800px;
+  margin: 40px auto;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* ✅ Styling for answer input box */
+.answer-box {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  resize: none;
+  margin-bottom: 20px;
+  outline: none;
+  background-color: #fafafa;
+}
+
+.answer-box:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
+}
+
+/* ✅ Styling for buttons */
+.question-nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.next-btn,
+.submit-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.next-btn:hover,
+.submit-btn:hover {
+  background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+  .questions-container {
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  p {
+    font-size: 16px;
+  }
+
+  .answer-box {
+    font-size: 14px;
+  }
+
+  .next-btn,
+  .submit-btn {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+}
+.question-page {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.question {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.answer-box {
+  width: 100%;
+  height: 120px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  resize: none;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.answer-box:focus {
+  border-color: #4CAF50;
+}
+
+.navigation-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-button, .submit-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.nav-button:hover, .submit-button:hover {
+  background-color: #45a049;
+}
+
