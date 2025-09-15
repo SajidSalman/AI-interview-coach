@@ -1,15 +1,15 @@
-# Node.js
+# Node dependencies
 node_modules/
 npm-debug.log
+yarn-error.log
+
+# Environment
 .env
 
-# React
-client/node_modules/
-client/build/
+# Build outputs
+build/
+dist/
 
 # Logs
-logs
+logs/
 *.log
-
-# Uploads
-uploads/
