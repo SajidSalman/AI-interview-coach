@@ -10,32 +10,51 @@ import Contact from "./contact";
 import Footer from "./footer";
 
 const Home = () => {
-   return (
-     <>
-       <Navbar />
-       <Hero />
-       <About />
-       <MockInterview />
-       <AITools />
+  const user = JSON.parse(localStorage.getItem("user")); // Get logged-in user info
 
-       {/* New Section for Resume Upload */}
-       <div style={styles.resumeSection}>
-         <h2 style={styles.title}>Want to Prepare Better?</h2>
-         <p>Upload your resume and get tailored interview questions!</p>
-         <Link to="/upload-resume" style={styles.uploadButton}>
-           Upload Resume
-         </Link>
-       </div>
+  return (
+    <>
+      <Navbar />
 
-       <Testimonial />
-       <Contact />
-       <Footer />
-     </>
-   );
+      {/* Personalized Welcome */}
+      {user && (
+        <div style={styles.welcomeSection}>
+          <h2>Welcome back, <strong>{user.name}</strong>!</h2>
+          <p>Ready to continue your interview preparation?</p>
+        </div>
+      )}
+
+      <Hero />
+      <About />
+      <MockInterview />
+      <AITools />
+
+      {/* New Section for Resume Upload */}
+      <div style={styles.resumeSection}>
+        <h2 style={styles.title}>Want to Prepare Better?</h2>
+        <p>Upload your resume and get tailored interview questions!</p>
+        <Link to="/upload-resume" style={styles.uploadButton}>
+          Upload Resume
+        </Link>
+      </div>
+
+      <Testimonial />
+      <Contact />
+      <Footer />
+    </>
+  );
 };
 
 // Styling for the new section
 const styles = {
+  welcomeSection: {
+    padding: '20px',
+    backgroundColor: '#e0f7fa',
+    textAlign: 'center',
+    marginTop: '80px', // Add margin to avoid overlap with Navbar
+    borderRadius: '10px',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+  },
   resumeSection: {
     padding: '40px',
     backgroundColor: '#f4f4f4',

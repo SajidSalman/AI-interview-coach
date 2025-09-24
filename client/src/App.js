@@ -12,6 +12,10 @@ import Testimonial from "./components/js/testimonial";
 import AITools from "./components/js/ai_tools";   
 import Contact from "./components/js/contact";    
 import Navbar from "./components/js/navbar";      
+import Dashboard from "./components/js/dashboard";
+import PrivateRoute from "./components/js/PrivateRoute";
+import Profile from "./components/js/profile"; 
+
 
 const App = () => {
   return (
@@ -28,7 +32,10 @@ const App = () => {
         <Route path="/about" element={<About />} /> 
         <Route path="/testimonial" element={<Testimonial />} />
         <Route path="/ai-tools" element={<AITools />} />       
-        <Route path="/contact" element={<Contact />} />      
+        <Route path="/contact" element={<Contact />} />  
+        <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>}  />  
+        <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+
       </Routes>
     </>
   );

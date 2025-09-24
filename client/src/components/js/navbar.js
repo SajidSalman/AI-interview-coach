@@ -1,11 +1,26 @@
-import React from "react";
-import { Link } from "react-router-dom"; // ✅ Import Link
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "../css/navbar.css";
 import logo from "../images/logo.png";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
   return (
-    
     <nav className="navbar navbar-expand-lg bg-white fixed-top shadow-sm">
       <div className="container">
         {/* Logo */}
@@ -14,7 +29,7 @@ const Navbar = () => {
           Interview Prep
         </Link>
 
-        {/* Toggle Button for Mobile */}
+        {/* Toggle Button */}
         <button
           className="navbar-toggler"
           type="button"
@@ -29,7 +44,7 @@ const Navbar = () => {
 
         {/* Navbar Items */}
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
+          <ul className="navbar-nav ms-auto align-items-center">
             <li className="nav-item">
               <Link className="nav-link" to="/">Home</Link>
             </li>
@@ -48,9 +63,42 @@ const Navbar = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/contact">Contact Us</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/login"><strong>Login</strong></Link>
-            </li>
+
+            {/* Conditional Login / Profile */}
+            {!token ? (
+              <li className="nav-item">
+                <Link className="nav-link" to="/login"><strong>Login</strong></Link>
+              </li>
+            ) : (
+              <li className="nav-item dropdown">
+                <span
+                  className="nav-link dropdown-toggle"
+                  style={{ cursor: "pointer" }}
+                  onClick={toggleDropdown}
+                >
+                  {user?.name || "Profile"}
+                </span>
+                {dropdownOpen && (
+                  <ul className="dropdown-menu show" style={{ position: "absolute", right: 0 }}>
+                    <li>
+                      <Link className="dropdown-item" to="/dashboard" onClick={() => setDropdownOpen(false)}>
+                        Dashboard
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/profile" onClick={() => setDropdownOpen(false)}>
+                        Profile
+                      </Link>
+                    </li>
+                    <li>
+                      <span className="dropdown-item" onClick={handleLogout}>
+                        Logout
+                      </span>
+                    </li>
+                  </ul>
+                )}
+              </li>
+            )}
           </ul>
         </div>
       </div>

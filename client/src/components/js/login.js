@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './navbar';
 import Footer from './footer';
-import '../css/auth.css'; // Make sure this path matches your CSS file
+import '../css/auth.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -13,21 +13,30 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(''); // clear previous errors
+
     if (!email || !password) {
       setError('Please fill out both fields');
       return;
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {  // Updated to correct endpoint
+      const response = await axios.post('http://localhost:5000/api/auth/login', {
         email,
         password,
       });
 
-      localStorage.setItem('token', response.data.token);  // Store token in localStorage
-      navigate('/dashboard');  // Redirect to the dashboard
+      // ✅ Store JWT and user info, redirect to home page
+      if (response.data.success) {
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        navigate("/"); // redirect to home page
+      } else {
+        setError(response.data.error || 'Login failed');
+      }
     } catch (err) {
-      setError('Invalid email or password');
+      console.error('Login error:', err.response || err);
+      setError(err.response?.data?.error || 'Something went wrong. Try again.');
     }
   };
 
@@ -62,7 +71,7 @@ const Login = () => {
             </p>
 
             <p className="register-link">
-              Don't have an account? <a href="/Signup">Register</a>
+              Don't have an account? <a href="/signup">Register</a>
             </p>
           </form>
         </div>
