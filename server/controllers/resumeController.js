@@ -1,9 +1,13 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// ✅ Initialize Gemini
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+// -------------------- Initialize Gemini (only if API key is set) --------------------
+let model = null;
+if (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== "dummy_key") {
+  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+  model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+}
 
+// -------------------- Analyze Resume --------------------
 export const analyzeResume = async (req, res) => {
   try {
     console.log("➡️ Request Received:", req.body);
@@ -26,9 +30,22 @@ export const analyzeResume = async (req, res) => {
       throw new Error("Failed to extract text from input");
     }
 
-    console.log("✅ Extracted input:", input.slice(0, 500), "..."); // log only first 500 chars
+    console.log("✅ Extracted input:", input.slice(0, 500), "...");
 
-    // ✅ Prompt for Gemini
+    // -------------------- Fallback if no API key --------------------
+    if (!model) {
+      return res.status(200).json({
+        questions: [
+          "Tell me about yourself.",
+          "What is your biggest strength?",
+          "Describe a project you worked on recently.",
+          "How do you handle challenges in a team?",
+          "Why are you interested in this role?",
+        ],
+      });
+    }
+
+    // -------------------- Prompt for Gemini --------------------
     const prompt = `
 Based on the following resume or input, generate 10 interview questions:
 - If the candidate is from a technical background:
@@ -42,7 +59,7 @@ ${input}
 Only return the questions in a numbered list. No extra text or explanation.
 `;
 
-    // ✅ Call Gemini
+    // -------------------- Call Gemini --------------------
     const result = await model.generateContent(prompt);
     const response = result.response;
 
@@ -59,7 +76,7 @@ Only return the questions in a numbered list. No extra text or explanation.
 
     // ✅ Return cleaned questions
     res.status(200).json({
-      questions: questions.map((q) => q.replace(/^\d+\.\s*/, "")), // strip numbering
+      questions: questions.map((q) => q.replace(/^\d+\.\s*/, "")),
     });
   } catch (error) {
     console.error("❌ Error analyzing resume:", error.message);

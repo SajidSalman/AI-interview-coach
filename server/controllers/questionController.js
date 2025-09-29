@@ -7,7 +7,20 @@ export const generateInterviewQuestions = async (req, res) => {
       return res.status(400).json({ error: "No file uploaded." });
     }
 
-    // ✅ Dynamically import pdf-parse
+    // ✅ Fallback if no API key
+    if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === "dummy_key") {
+      return res.status(200).json({
+        questions: [
+          "What technologies have you recently worked with?",
+          "Can you explain a project you are most proud of?",
+          "How do you approach debugging?",
+          "Describe a time you worked in a team.",
+          "What motivates you to apply for this role?",
+        ],
+      });
+    }
+
+    // ✅ Dynamically import pdf-parse only when needed
     const { default: pdfParse } = await import("pdf-parse");
 
     // Extract text from PDF
@@ -15,11 +28,9 @@ export const generateInterviewQuestions = async (req, res) => {
     const pdfData = await pdfParse(dataBuffer);
     const extractedText = pdfData.text;
 
-    if (!extractedText || !extractedText.trim()) {
+    if (!extractedText || extractedText.trim() === "") {
       throw new Error("Failed to extract text from PDF. Try another format.");
     }
-
-    console.log("📄 Extracted Resume Text:", extractedText);
 
     // ✅ Call Gemini REST API properly
     const apiResponse = await axios.post(
@@ -43,8 +54,6 @@ export const generateInterviewQuestions = async (req, res) => {
       }
     );
 
-    console.log("🔎 Full Gemini API response:", JSON.stringify(apiResponse.data, null, 2));
-
     if (
       !apiResponse.data ||
       !apiResponse.data.candidates ||
@@ -53,25 +62,15 @@ export const generateInterviewQuestions = async (req, res) => {
       throw new Error("AI response is empty. Check API request.");
     }
 
-    // ✅ Extract and clean AI response
+    // ✅ Extract AI response text
     const aiResponse =
       apiResponse.data.candidates[0]?.content?.parts
         ?.map((part) => part.text)
         .join("\n") || "";
 
-    const questions = aiResponse
-      .split("\n")
-      .map((q) => q.replace(/^\d+[\.\)]\s*/, "").trim()) // remove numbering
-      .filter((q) => q !== "");
-
-    console.log("✅ Generated Questions:", questions);
-
-    res.json({ questions });
+    res.json({ questions: aiResponse.split("\n").filter((q) => q.trim()) });
   } catch (error) {
     console.error("❌ Error in Question Generation:", error.message);
-    res.status(500).json({
-      error: "Failed to generate interview questions",
-      details: error.message,
-    });
+    res.status(500).json({ error: error.message });
   }
 };

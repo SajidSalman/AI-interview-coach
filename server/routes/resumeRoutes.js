@@ -2,71 +2,95 @@ import express from "express";
 import multer from "multer";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
+import pdfParse from "pdf-parse";
+
 dotenv.config();
 
 const router = express.Router();
- 
-// ✅ Configure Multer for file uploads (storing in memory)
+
+// ✅ Configure Multer for file uploads (memory storage)
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// ✅ Initialize Gemini AI
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+// ✅ Initialize Gemini AI only if key exists
+let genAI = null;
+if (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== "dummy_key") {
+  genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+}
 
-// ✅ Route to analyze job description or resume and generate interview questions
+// ✅ Route: Upload resume and/or provide job description
 router.post("/analyze", upload.single("resume"), async (req, res) => {
   try {
     let jobDescription = req.body.jobDescription || "";
 
-    // ✅ If a resume file is uploaded, convert buffer to text
+    // ✅ If a resume PDF is uploaded, extract text
     if (req.file) {
-      console.log("✅ Resume file received");
-      jobDescription += `\n\nResume Content:\n${req.file.buffer.toString("utf-8")}`;
+      console.log("✅ Resume uploaded, parsing PDF...");
+      try {
+        const pdfData = await pdfParse(req.file.buffer);
+        jobDescription += `\n\nResume Content:\n${pdfData.text}`;
+      } catch (pdfErr) {
+        console.error("❌ Error parsing PDF:", pdfErr);
+        return res.status(400).json({ error: "Failed to read uploaded PDF." });
+      }
     }
 
+    // ✅ Validate input
     if (!jobDescription.trim()) {
-      return res.status(400).json({ error: "Please provide a job description or upload a resume." });
+      return res.status(400).json({ error: "Please upload a resume or provide a job description." });
     }
 
-    console.log("🔹 Job Description:\n", jobDescription);
+    // ✅ If no Gemini API key, use random fallback questions
+    if (!genAI) {
+      const fallbackQuestionsPool = [
+        "Tell me about yourself.",
+        "What motivates you?",
+        "Why should we hire you?",
+        "Describe a challenging project you worked on.",
+        "Where do you see yourself in 5 years?",
+        "How do you handle stress?",
+        "Give an example of teamwork.",
+        "What is your biggest weakness?",
+        "How do you prioritize tasks?",
+        "Describe a leadership experience."
+      ];
 
-    // ✅ Create a prompt for Gemini AI
-    const prompt = `Based on the following job description and resume (if provided), generate 5 mock interview questions:\n\n${jobDescription}`;
-    console.log("🔹 Prompt sent to Gemini:\n", prompt);
+      const questions = [];
+      while (questions.length < 5) {
+        const q = fallbackQuestionsPool[Math.floor(Math.random() * fallbackQuestionsPool.length)];
+        if (!questions.includes(q)) questions.push(q);
+      }
 
-    // ✅ Call Gemini AI
+      return res.status(200).json({ questions });
+    }
+
+    // ✅ Generate prompt for Gemini AI
+    const prompt = `Generate exactly 5 mock interview questions based on the following job description and resume content:\n\n${jobDescription}`;
+
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     const result = await model.generateContent(prompt);
 
-    // ✅ Correct path to extract AI-generated content
-    const aiResponse = result?.response?.candidates?.[0]?.content?.parts?.map(part => part.text).join("\n");
+    // ✅ Extract AI-generated content
+    const aiResponse = result?.response?.candidates?.[0]?.content?.parts
+      ?.map((part) => part.text)
+      .join("\n");
 
     if (!aiResponse) {
-      console.error("❌ AI Response Error: Empty response");
       return res.status(500).json({ error: "Failed to generate questions from AI." });
     }
 
-    console.log("✅ AI Response:\n", aiResponse);
-
-    // ✅ Split into separate questions (by newline or punctuation)
     const questions = aiResponse
       .split("\n")
       .map(q => q.trim())
-      .filter(q => q !== "");
+      .filter(q => q !== "")
+      .slice(0, 5); // limit to 5 questions
 
-    if (questions.length === 0) {
-      console.error("❌ No questions generated");
-      return res.status(500).json({ error: "AI failed to generate valid questions." });
-    }
-
-    // ✅ Send generated questions as response
-    console.log("✅ Generated Questions:\n", questions);
     res.status(200).json({ questions });
 
   } catch (error) {
-    console.error("❌ Gemini API Error:", error);
+    console.error("❌ Server error:", error);
     res.status(500).json({ error: "Failed to generate interview questions." });
   }
 });
 
-export default router; // Export the router as a default export
+export default router;

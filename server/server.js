@@ -3,24 +3,25 @@ dotenv.config();
 
 import path from "path";
 import { fileURLToPath } from "url";
-console.log("🧪 MONGO_URI is:", process.env.MONGO_URI);
-
-// Fix for __dirname in ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
+import fs from "fs";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
-import fs from "fs";
 import mongoose from "mongoose";
+import PDFDocument from "pdfkit";
 
 import connectDB from "./config/db.js";
 import geminiRoutes from "./routes/geminiRoutes.js";
 import mockInterviewRoutes from "./routes/mockInterviewRoutes.js";
 import resumeRoutes from "./routes/resumeRoutes.js";
-import authRoutes from "./routes/authRoutes.js"; // Ensure this is correct
+import authRoutes from "./routes/authRoutes.js";
+
+console.log("🧪 MONGO_URI is:", process.env.MONGO_URI);
+
+// Fix for __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -41,6 +42,25 @@ if (!fs.existsSync(uploadDir)) {
   console.log(`✅ 'uploads' directory exists at ${uploadDir}`);
 }
 
+// ✅ Ensure placeholder PDF exists
+const pdfDir = path.join(__dirname, "test/data");
+const pdfPath = path.join(pdfDir, "05-versions-space.pdf");
+
+if (!fs.existsSync(pdfDir)) {
+  fs.mkdirSync(pdfDir, { recursive: true });
+  console.log(`✅ Created 'test/data' directory at ${pdfDir}`);
+}
+
+if (!fs.existsSync(pdfPath)) {
+  const doc = new PDFDocument();
+  doc.pipe(fs.createWriteStream(pdfPath));
+  doc.text("This is a placeholder PDF for testing.");
+  doc.end();
+  console.log(`✅ Created placeholder PDF at ${pdfPath}`);
+} else {
+  console.log(`✅ Placeholder PDF already exists at ${pdfPath}`);
+}
+
 // Middleware
 app.use(helmet());
 app.use(compression());
@@ -52,8 +72,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use("/api/auth", authRoutes); // Authentication routes (register, login, forgot password, reset password)
-app.use("/api/gemini", geminiRoutes); 
+app.use("/api/auth", authRoutes);
+app.use("/api/gemini", geminiRoutes);
 app.use("/api/mock-interview", mockInterviewRoutes);
 app.use("/api/resume", resumeRoutes);
 
@@ -64,7 +84,7 @@ app.get("/", (req, res) => {
 
 // 404 Handler
 app.use((req, res) => {
-   res.status(404).json({ error: `Route not found: ${req.method} ${req.url}` });
+  res.status(404).json({ error: `Route not found: ${req.method} ${req.url}` });
 });
 
 // Global Error Handler
@@ -83,7 +103,7 @@ const server = app.listen(PORT, () => {
 process.on("SIGINT", async () => {
   console.log("\n🔴 Shutting down server...");
   server.close(async () => {
-     await mongoose.connection.close();
+    await mongoose.connection.close();
     console.log("✅ Database closed. Exiting...");
     process.exit(0);
   });
