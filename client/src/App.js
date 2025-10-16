@@ -1,5 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+
+// Pages
 import Home from "./components/js/home";
 import MockInterview from "./components/js/mock_interview";
 import StartInterview from "./components/js/StartInterview";
@@ -11,17 +13,22 @@ import About from "./components/js/about";
 import Testimonial from "./components/js/testimonial";
 import AITools from "./components/js/ai_tools";
 import Contact from "./components/js/contact";
+import ForgotPassword from "./components/js/ForgotPassword";
+
+// Components
 import Navbar from "./components/js/navbar";
 import Dashboard from "./components/js/dashboard";
 import PrivateRoute from "./components/js/PrivateRoute";
 import Profile from "./components/js/profile";
-import ForgotPassword from "./components/js/ForgotPassword"; // ✅ added import
 
 const App = () => {
   return (
     <>
-      <Navbar /> {/* Navbar visible on all pages */}
+      {/* Navbar visible on all pages */}
+      <Navbar />
+
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<Signup />} />
@@ -33,11 +40,9 @@ const App = () => {
         <Route path="/testimonial" element={<Testimonial />} />
         <Route path="/ai-tools" element={<AITools />} />
         <Route path="/contact" element={<Contact />} />
-
-        {/* ✅ Forgot Password route */}
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
-        {/* Protected Routes */}
+        {/* Private Routes */}
         <Route
           path="/dashboard"
           element={

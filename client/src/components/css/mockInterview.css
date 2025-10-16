@@ -79,15 +79,15 @@
   transition: all 0.3s ease;
 }
 
-.start-interview-button:hover:not(:disabled) {
-  background-color: #222; /* Slightly lighter black on hover */
+.start-interview-button:hover:not(:disabled),
+.start-interview-button.active {
+  background-color: #222; /* Slightly lighter black on hover or active */
 }
 
 .start-interview-button:disabled {
   background-color: #555; /* Disabled state in grayish black */
   cursor: not-allowed;
 }
-
 
 .questions-container {
   display: flex;

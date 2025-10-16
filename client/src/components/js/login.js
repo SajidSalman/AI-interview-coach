@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Navbar from './navbar';
 import Footer from './footer';
 import '../css/auth.css';
 
@@ -41,7 +40,6 @@ const Login = () => {
 
   return (
     <>
-      <Navbar />
       <section className="auth-section">
         <div className="auth-container">
           <h2>Login</h2>

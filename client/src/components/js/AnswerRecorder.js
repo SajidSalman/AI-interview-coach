@@ -12,18 +12,21 @@ const AnswerRecorder = ({
   const [mediaBlob, setMediaBlob] = useState(null);
   const [mediaUrl, setMediaUrl] = useState("");
   const [recording, setRecording] = useState(false);
+  const [recordTime, setRecordTime] = useState(0); // seconds
 
   const mediaRecorderRef = useRef(null);
   const chunksRef = useRef([]);
   const streamRef = useRef(null);
+  const timerRef = useRef(null);
 
-  // Notify parent about changes
+  // Notify parent about answer changes
   useEffect(() => {
     onAnswerChange({ questionId, text, mediaBlob, mode });
   }, [text, mediaBlob, mode, questionId, onAnswerChange]);
 
   const handleTextChange = (e) => setText(e.target.value);
 
+  // Start recording
   const startRecording = async () => {
     try {
       chunksRef.current = [];
@@ -46,6 +49,8 @@ const AnswerRecorder = ({
         setMediaBlob(blob);
         setMediaUrl(url);
         setRecording(false);
+        clearInterval(timerRef.current);
+        setRecordTime(0);
 
         // Stop all tracks to release camera/mic
         stream.getTracks().forEach((track) => track.stop());
@@ -55,6 +60,12 @@ const AnswerRecorder = ({
 
       recorder.start();
       setRecording(true);
+
+      // Start timer
+      setRecordTime(0);
+      timerRef.current = setInterval(() => {
+        setRecordTime((prev) => prev + 1);
+      }, 1000);
     } catch (err) {
       console.error("Error accessing media devices:", err);
       alert("Check microphone/camera permissions to start recording.");
@@ -62,7 +73,9 @@ const AnswerRecorder = ({
   };
 
   const stopRecording = () => {
-    if (mediaRecorderRef.current && recording) mediaRecorderRef.current.stop();
+    if (mediaRecorderRef.current && recording) {
+      mediaRecorderRef.current.stop();
+    }
   };
 
   const handleReset = () => {
@@ -71,11 +84,23 @@ const AnswerRecorder = ({
     setMediaUrl("");
     setMode(defaultMode);
     setRecording(false);
+    setRecordTime(0);
     chunksRef.current = [];
+    clearInterval(timerRef.current);
+
     if (streamRef.current) {
       streamRef.current.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
     }
+  };
+
+  // Format seconds into mm:ss
+  const formatTime = (sec) => {
+    const m = Math.floor(sec / 60)
+      .toString()
+      .padStart(2, "0");
+    const s = (sec % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
   };
 
   return (
@@ -124,12 +149,23 @@ const AnswerRecorder = ({
           >
             {recording
               ? "Stop Recording"
+              : mediaUrl
+              ? "Re-record"
               : mode === "voice"
               ? "Start Voice Recording"
               : "Start Video Recording"}
           </button>
 
-          {mediaUrl && (
+          {/* Recording Indicator */}
+          {recording && (
+            <span className="recording-indicator">
+              <span className="blinking-dot">●</span> Recording{" "}
+              {mode === "voice" ? "Audio" : "Video"}… {formatTime(recordTime)}
+            </span>
+          )}
+
+          {/* Preview after recording */}
+          {mediaUrl && !recording && (
             <>
               {mode === "voice" && (
                 <audio src={mediaUrl} controls className="audio-player" />

@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Navbar from "./navbar";
 import Hero from "./hero_section";
 import About from "./about";
 import Testimonial from "./testimonial";
@@ -12,7 +11,6 @@ const Home = () => {
 
   return (
     <>
-      <Navbar />
 
       {/* 🌟 Personalized Welcome Section */}
       {user && (
@@ -25,7 +23,6 @@ const Home = () => {
       )}
 
       {/* 🚀 Hero Section */}
-      {/* Pass link prop to Hero button */}
       <Hero tryAIHelpLink="/mock-interview" />
 
       {/* 💼 About Section */}
@@ -33,7 +30,7 @@ const Home = () => {
         <About />
       </div>
 
-      {/* 🤖 AI Tools Section (unchanged, links to /ai-tools) */}
+      {/* 🤖 AI Tools Section */}
       <section style={styles.aiHelpSection}>
         <div style={styles.aiContent}>
           <h2>Supercharge Your Prep with AI</h2>

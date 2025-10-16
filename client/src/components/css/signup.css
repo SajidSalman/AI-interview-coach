@@ -1,7 +1,7 @@
 /* General Styles */
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f4f7fc;
+  background-color: #f4f7fc; /* neutral background */
   margin: 0;
   padding: 0;
 }
@@ -14,16 +14,23 @@ body {
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
-  flex-direction: column; /* Ensure elements are stacked vertically */
+  flex-direction: column;
   margin-top: 50px;
 }
 
 h2 {
   font-size: 2rem;
-  margin-bottom: 5px;  
+  margin-bottom: 5px;
   text-align: center;
   color: #333;
   font-weight: bold;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 25px;
 }
 
 /* Form Styles */
@@ -31,7 +38,7 @@ h2 {
   background-color: #fff;
   padding: 30px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   width: 100%;
   max-width: 400px;
 }
@@ -57,16 +64,16 @@ input {
 }
 
 input:focus {
-  border-color: #0066ff;
+  border-color: #333;
   outline: none;
-  background-color: #e6f0ff;
+  background-color: #eaeaea;
 }
 
 button {
   width: 100%;
   padding: 12px;
   border: none;
-  background-color: #0066ff;
+  background-color: #000; /* black button */
   color: #fff;
   font-size: 1.1rem;
   font-weight: bold;
@@ -76,7 +83,7 @@ button {
 }
 
 button:hover {
-  background-color: #0052cc;
+  background-color: #444;
 }
 
 /* Error message styles */
@@ -93,14 +100,14 @@ button:hover {
   margin-top: 20px;
 }
 
-.login-redirect span {
-  color: #0066ff;
-  cursor: pointer;
+.login-redirect a {
+  color: #000;
+  font-weight: bold;
   text-decoration: underline;
 }
 
-.login-redirect span:hover {
-  color: #0052cc;
+.login-redirect a:hover {
+  color: #444;
   text-decoration: none;
 }
 
@@ -112,8 +119,7 @@ button:hover {
 
   .register-form {
     padding: 20px;
-    width: 60%;
+    width: 80%;
     max-width: 100%;
-  
   }
 }

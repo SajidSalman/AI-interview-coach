@@ -15,19 +15,21 @@ const MockInterviewPage = () => {
   const [feedbacks, setFeedbacks] = useState({});
 
   const defaultQuestions = [
-    "Tell me about yourself.",
-    "What are your strengths and weaknesses?",
-    "Why should we hire you?",
-    "Describe a challenging project you worked on.",
-    "Where do you see yourself in 5 years?",
+    { question: "Tell me about yourself.", tip: "Highlight your strengths." },
+    { question: "What are your strengths and weaknesses?", tip: "Be honest but positive." },
+    { question: "Why should we hire you?", tip: "Show enthusiasm and alignment." },
+    { question: "Describe a challenging project you worked on.", tip: "Focus on problem-solving." },
+    { question: "Where do you see yourself in 5 years?", tip: "Show ambition and growth." },
   ];
 
   const handleFileChange = (e) => setResumeFile(e.target.files[0]);
 
+  // -------------------------------
+  // Generate questions via Gemini AI
+  // -------------------------------
   const fetchQuestions = async () => {
     if (!jobDescription.trim() || !email.trim() || !resumeFile) {
-      alert("Please enter Job Description, Registered Email, and upload your Resume.");
-      return;
+      return alert("Please enter Job Description, Registered Email, and upload your Resume.");
     }
 
     setLoading(true);
@@ -49,52 +51,38 @@ const MockInterviewPage = () => {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
-      const aiQuestions = res.data.questions;
-      const finalQuestions = aiQuestions?.length ? aiQuestions : defaultQuestions;
-      setQuestions(finalQuestions);
+      const aiQuestions = res.data.questions || defaultQuestions;
+      setQuestions(aiQuestions);
 
-      // Show questions one by one with animation delay
-      finalQuestions.forEach((q, idx) => {
-        setTimeout(() => {
-          setVisibleQuestions((prev) => [...prev, q]);
-        }, idx * 500);
+      aiQuestions.forEach((q, idx) => {
+        setTimeout(() => setVisibleQuestions(prev => [...prev, q]), idx * 500);
       });
 
-      if (!aiQuestions?.length) {
-        setError("No AI-generated questions found. Using default questions.");
-      }
+      if (!aiQuestions.length) setError("No AI-generated questions found. Using default questions.");
     } catch (err) {
       console.error(err);
       setError("Failed to fetch AI questions. Using fallback questions.");
       setQuestions(defaultQuestions);
-      defaultQuestions.forEach((q, idx) => {
-        setTimeout(() => {
-          setVisibleQuestions((prev) => [...prev, q]);
-        }, idx * 500);
-      });
+      defaultQuestions.forEach((q, idx) =>
+        setTimeout(() => setVisibleQuestions(prev => [...prev, q]), idx * 500)
+      );
     } finally {
       setLoading(false);
     }
   };
 
   const handleAnswerChange = ({ questionId, text, mediaBlob, mode }) => {
-    setAnswers((prev) => ({ ...prev, [questionId]: { text, mediaBlob, mode } }));
+    setAnswers(prev => ({ ...prev, [questionId]: { text, mediaBlob, mode } }));
   };
 
+  // -------------------------------
+  // Submit answers and get Gemini feedback
+  // -------------------------------
   const submitAllAnswers = async () => {
-    if (questions.length === 0) {
-      alert("Please generate questions first.");
-      return;
-    }
+    if (!questions.length) return alert("Please generate questions first.");
 
-    const answeredQuestions = Object.values(answers).filter(
-      (ans) => ans.text?.trim() || ans.mediaBlob
-    );
-
-    if (answeredQuestions.length === 0) {
-      alert("Please answer at least one question before submitting.");
-      return;
-    }
+    const answeredQuestions = Object.values(answers).filter(a => a.text?.trim() || a.mediaBlob);
+    if (!answeredQuestions.length) return alert("Please answer at least one question before submitting.");
 
     setLoading(true);
 
@@ -123,15 +111,14 @@ const MockInterviewPage = () => {
         text: ans.text || "",
       }));
 
+      // Fetch feedback via Gemini AI
       const feedbackRes = await axios.post(
         "http://localhost:5000/api/mock-interview/review-answers",
         { textAnswers: textAnswersArray }
       );
 
       const feedbackObj = {};
-      feedbackRes.data.feedback.forEach((f) => {
-        feedbackObj[f.questionId] = f.feedback;
-      });
+      feedbackRes.data.feedback.forEach(f => (feedbackObj[f.questionId] = f.feedback));
 
       setFeedbacks(feedbackObj);
       setAnswers({});
@@ -149,7 +136,7 @@ const MockInterviewPage = () => {
       <div className="start-interview-box">
         <h1 className="questions-title">Mock Interview</h1>
 
-        {/* Input Form Section */}
+        {/* Input Form */}
         <div className="start-interview-form-section">
           <div className="form-field">
             <label className="start-input-label">
@@ -158,7 +145,7 @@ const MockInterviewPage = () => {
             <input
               type="text"
               value={jobDescription}
-              onChange={(e) => setJobDescription(e.target.value)}
+              onChange={e => setJobDescription(e.target.value)}
               placeholder="Enter job description for the role..."
               className="start-input-box"
             />
@@ -171,7 +158,7 @@ const MockInterviewPage = () => {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={e => setEmail(e.target.value)}
               placeholder="Enter your registered email..."
               className="start-input-box"
             />
@@ -187,9 +174,7 @@ const MockInterviewPage = () => {
               onChange={handleFileChange}
               className="start-input-box"
             />
-            <p className="text-gray-500 text-sm mt-1">
-              Upload your resume in PDF format
-            </p>
+            <p className="text-gray-500 text-sm mt-1">Upload your resume in PDF format</p>
           </div>
 
           <div className="button-container">
@@ -205,7 +190,7 @@ const MockInterviewPage = () => {
 
         {error && <p className="error-message">{error}</p>}
 
-        {/* Questions Section */}
+        {/* Questions */}
         <div className="questions-container">
           {visibleQuestions.map((q, idx) => {
             const qid = `q${idx}`;
@@ -215,18 +200,9 @@ const MockInterviewPage = () => {
                   Question {idx + 1} of {questions.length}
                 </h3>
 
-                {/* ✅ Removed duplicate question text here */}
-
-                {/* Tip for AI-generated question */}
-                {typeof q !== "string" && q.tip && (
-                  <p className="question-tip">
-                    <em>Tip: {q.tip}</em>
-                  </p>
-                )}
-
                 <AnswerRecorder
                   questionId={qid}
-                  questionText={typeof q === "string" ? q : q.question}
+                  questionText={q.question}
                   defaultMode="text"
                   onAnswerChange={handleAnswerChange}
                 />

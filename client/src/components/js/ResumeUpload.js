@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Navbar from './navbar';
 import Footer from './footer';
 
 const ResumeUpload = () => {
@@ -41,7 +40,6 @@ const ResumeUpload = () => {
 
   return (
     <>
-      <Navbar />
 
       <div style={styles.container}>
         {/* Personalized Welcome */}
