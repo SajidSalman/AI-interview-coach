@@ -1,0 +1,109 @@
+.answer-recorder {
+  margin-bottom: 20px;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #f9fafb;
+}
+
+.question-text {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #1f2937;
+}
+
+.mode-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.mode-buttons button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background-color: #e5e7eb;
+  color: #1f2937;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.mode-buttons button:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.mode-buttons button.active {
+  background-color: #000;
+  color: #fff;
+}
+
+.text-area {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 8px;
+  resize: none;
+  outline: none;
+}
+
+.text-area:focus {
+  border-color: #000;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+.voice-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.start-btn {
+  padding: 6px 16px;
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.start-btn:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.stop-btn {
+  padding: 6px 16px;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.stop-btn:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.audio-player {
+  margin-top: 8px;
+  width: 100%;
+}
+
+.reset-btn {
+  margin-top: 10px;
+  padding: 5px 12px;
+  border: none;
+  border-radius: 6px;
+  background-color: #f97316;
+  color: white;
+  cursor: pointer;
+}
+
+.reset-btn:hover {
+  background-color: #000;
+  color: #fff;
+}

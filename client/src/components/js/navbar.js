@@ -24,12 +24,12 @@ const Navbar = () => {
     <nav className="navbar navbar-expand-lg bg-white fixed-top shadow-sm">
       <div className="container">
         {/* Logo */}
-        <Link className="navbar-brand" to="/">
-          <img src={logo} alt="Logo" className="logo" />
+        <Link className="navbar-brand d-flex align-items-center" to="/">
+          <img src={logo} alt="Logo" className="logo me-2" />
           Interview Prep
         </Link>
 
-        {/* Toggle Button */}
+        {/* Hamburger / Toggle Button */}
         <button
           className="navbar-toggler"
           type="button"
@@ -42,7 +42,7 @@ const Navbar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        {/* Navbar Items */}
+        {/* Navbar Links */}
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto align-items-center">
             <li className="nav-item">
@@ -67,7 +67,7 @@ const Navbar = () => {
             {/* Conditional Login / Profile */}
             {!token ? (
               <li className="nav-item">
-                <Link className="nav-link" to="/login"><strong>Login</strong></Link>
+                <Link className="nav-link fw-bold" to="/login">Login</Link>
               </li>
             ) : (
               <li className="nav-item dropdown">

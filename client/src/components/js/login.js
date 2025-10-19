@@ -13,7 +13,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(''); // clear previous errors
+    setError('');
 
     if (!email || !password) {
       setError('Please fill out both fields');
@@ -26,11 +26,10 @@ const Login = () => {
         password,
       });
 
-      // ✅ Store JWT and user info, redirect to home page
       if (response.data.success) {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.user));
-        navigate("/"); // redirect to home page
+        navigate("/");
       } else {
         setError(response.data.error || 'Login failed');
       }

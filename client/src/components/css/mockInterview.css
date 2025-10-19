@@ -1,104 +1,146 @@
-.start-interview-container {
+.mock-interview-page {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f4f4f9;
+  align-items: flex-start;
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
+  padding: 50px 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .start-interview-box {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 400px;
+  background: #ffffff;
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 900px;
   text-align: center;
 }
 
-.start-interview-form {
+.questions-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #1f2937;
+}
+
+.start-interview-form-section {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 40px;
 }
 
-.start-input-label, .role-level-label {
-  font-weight: bold;
-  margin-bottom: 5px;
-  display: block;
-  text-align: left;
-}
-
-.start-textarea-box, 
-.start-input-box, 
-#role-level {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
-  box-sizing: border-box;
-}
-
-#role-level {
-  cursor: pointer;
-  background: white;
-  appearance: none;
-}
-
-/* Ensuring Role Level Dropdown aligns properly */
-.role-level-container {
+.form-field {
+  flex: 1 1 250px;
   display: flex;
   flex-direction: column;
   text-align: left;
-  width: 100%;
+}
+
+.start-input-label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #334155;
+}
+
+.start-input-box {
+  padding: 12px 15px;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.start-input-box:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 5px rgba(37,99,235,0.3);
 }
 
 .button-container {
+  margin-top: 20px;
   display: flex;
   justify-content: center;
-  margin-top: 15px;
+  width: 100%;
 }
 
 .start-interview-button {
-  background: #007bff;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  background-color: #000; /* Black background */
+  color: #fff; /* White text */
+  padding: 12px 25px;
   font-size: 16px;
-  transition: background 0.3s ease;
-}
-
-.start-interview-button:disabled {
-  background: #aaa;
-  cursor: not-allowed;
+  font-weight: 600;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .start-interview-button:hover:not(:disabled) {
-  background: #0056b3;
+  background-color: #222; /* Slightly lighter black on hover */
 }
 
-.error-message {
-  color: red;
-  margin-top: 10px;
-  font-weight: bold;
+.start-interview-button:disabled {
+  background-color: #555; /* Disabled state in grayish black */
+  cursor: not-allowed;
 }
+
 
 .questions-container {
-  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  align-items: center;
+}
+
+.question-card {
+  background: #f8fafc;
+  padding: 25px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 700px;
   text-align: left;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+  transition: all 0.4s ease;
 }
 
-.questions-title {
-  font-size: 18px;
-  font-weight: bold;
+.question-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.question-title {
+  font-size: 20px;
+  font-weight: 600;
   margin-bottom: 10px;
+  color: #1e293b;
 }
 
-.question-item {
-  background: #e9ecef;
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 5px;
+.question-text {
+  font-size: 16px;
+  color: #334155;
+  margin-bottom: 15px;
+}
+
+.feedback-box {
+  margin-top: 10px;
+  padding: 12px 15px;
+  background-color: #e0f2fe;
+  border-left: 5px solid #0284c7;
+  border-radius: 10px;
+  color: #0369a1;
+  font-size: 14px;
+}
+
+/* Fade-in-up animation */
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease forwards;
 }

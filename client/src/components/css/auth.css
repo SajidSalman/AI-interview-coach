@@ -4,15 +4,15 @@
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  background-color: #f9f9f9; /* adjust as per theme */
+  background-color: #fff; /* softer dark gray background */
   margin-top: 40px;
 }
 
 .auth-container {
-  background: white;
+  background: #f9f9f9; /* light container for contrast */
   border-radius: 10px;
   padding: 2.5rem;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
   width: 100%;
   max-width: 400px;
 }
@@ -24,6 +24,7 @@
 
 .auth-form label {
   margin: 0.5rem 0 0.2rem;
+  color: #111; /* label text color */
 }
 
 .auth-form input {
@@ -35,26 +36,40 @@
 .auth-form button {
   margin-top: 1rem;
   padding: 0.8rem;
-  background-color: #007bff; /* use your brand color */
-  color: white;
+  background-color: #333; /* softer black/dark gray button */
+  color: #fff; /* white text */
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
 }
 
 .auth-form button:hover {
-  background-color: #0056b3;
+  background-color: #555; /* lighter dark gray on hover */
 }
 
-.forgot-password {
+/* Forgot Password & Register links */
+.forgot-password,
+.register-link {
   text-align: center;
- 
-  font-weight: bold;
+  margin-top: 10px;
 }
-.register-link{
-  text-align: center;
+
+.forgot-password a,
+.register-link a {
+  color: #111; /* bright accent color for visibility */
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
+
+.forgot-password a:hover,
+.register-link a:hover {
+  color: #333; /* slightly lighter on hover */
+}
+
 .error {
-  color: red;
+  color: #ff6b6b; /* soft red for error */
   margin-top: 0.5rem;
 }

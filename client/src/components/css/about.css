@@ -1,75 +1,145 @@
-/* About Section with Curved Background */
+/* Section Background */
 .about-section {
-   position: relative;
-   background: linear-gradient(135deg, #f8f9fa 0%, #e0e0e0 100%);
-   padding: 100px 20px;
-   clip-path: ellipse(120% 80% at 50% 10%);
- }
- 
- /* About Content - Overlapping Layout */
- .about-content {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   max-width: 1100px;
-   margin: 0 auto;
-   gap: 50px;
-   flex-wrap: wrap;
- }
- 
- /* Image with Hover Effect */
- .about-image {
-   flex: 1;
-   text-align: center;
-   min-width: 350px;
- }
- 
- .about-image img {
-   max-width: 90%;
-   height: auto;
-   border-radius: 20px;
-   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-   transition: transform 0.3s ease-in-out;
- }
- 
- .about-image img:hover {
-   transform: scale(1.05);
- }
- 
- /* Text Content */
- .about-text {
-   flex: 1;
-   min-width: 350px;
- }
- 
- .about-text h2 {
-   font-size: 2.5rem;
-   font-weight: bold;
-   color: #000;
-   margin-bottom: 20px;
- }
- 
- .about-text p {
-   font-size: 1.2rem;
-   color: #444;
-   line-height: 1.6;
-   margin-bottom: 15px;
- }
- 
- /* Call to Action Button */
- .learn-more-btn {
-   background: black;
-   color: white;
-   padding: 12px 25px;
-   font-size: 1rem;
-   font-weight: bold;
-   border: none;
-   border-radius: 25px;
-   cursor: pointer;
-   transition: 0.3s;
- }
- 
- .learn-more-btn:hover {
-   background: #333;
- }
- 
+    position: relative;
+    background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+    padding: 100px 20px;
+    clip-path: ellipse(120% 80% at 50% 10%);
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Content Layout */
+.about-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1100px;
+    margin: 0 auto;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+/* Image Styling */
+.about-image {
+    flex: 1;
+    text-align: center;
+    min-width: 350px;
+}
+
+.about-image img {
+    max-width: 95%;
+    border-radius: 20px;
+    box-shadow: 0px 15px 30px rgba(0,0,0,0.2);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.about-image img:hover {
+    transform: scale(1.05) rotate(-1deg);
+    box-shadow: 0px 25px 40px rgba(0,0,0,0.25);
+}
+
+/* Text Styling */
+.about-text {
+    flex: 1;
+    min-width: 350px;
+    position: relative;
+    font-family: 'Poppins', sans-serif;
+    color: #444;
+}
+
+.about-text h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 20px;
+}
+
+.about-text p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+.about-text p strong {
+    color: #222;
+}
+
+/* Extra Info Container for Slide Down */
+.extra-info-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.6s ease;
+}
+
+.extra-info-container.open {
+    max-height: 1000px; /* Enough to fit all content */
+}
+
+/* Extra Info Styling */
+.extra-info {
+    margin-top: 20px;
+    padding: 15px 0;
+    border-radius: 12px;
+}
+
+/* Feature Animations */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.feature-fade {
+    opacity: 0;
+    animation: fadeInUp 0.6s forwards;
+}
+
+.feature-fade.slide-left {
+    animation-name: slideLeft;
+}
+
+.feature-fade.slide-right {
+    animation-name: slideRight;
+}
+
+/* Feature Icon Styling */
+.feature-icon {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 1.3rem;
+    color: #ff7f50; /* accent color for icons */
+    animation: bounce 0.6s forwards;
+}
+
+@keyframes bounce {
+    0% { transform: translateY(-5px); }
+    50% { transform: translateY(2px); }
+    100% { transform: translateY(0); }
+}
+
+/* Button Styling */
+.learn-more-btn {
+    background: #000;
+    color: #fff;
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+}
+
+.learn-more-btn:hover {
+    background: #333;
+    transform: translateY(-2px);
+}

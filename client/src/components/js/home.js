@@ -1,84 +1,137 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { Link } from "react-router-dom";
 import Navbar from "./navbar";
 import Hero from "./hero_section";
 import About from "./about";
-import MockInterview from "./mock_interview";
-import AITools from "./ai_tools";
 import Testimonial from "./testimonial";
 import Contact from "./contact";
 import Footer from "./footer";
 
 const Home = () => {
-  const user = JSON.parse(localStorage.getItem("user")); // Get logged-in user info
+  const user = JSON.parse(localStorage.getItem("user")); // Logged-in user info
 
   return (
     <>
       <Navbar />
 
-      {/* Personalized Welcome */}
+      {/* 🌟 Personalized Welcome Section */}
       {user && (
-        <div style={styles.welcomeSection}>
-          <h2>Welcome back, <strong>{user.name}</strong>!</h2>
-          <p>Ready to continue your interview preparation?</p>
-        </div>
+        <section style={styles.welcomeSection}>
+          <h2>
+            👋 Welcome back, <span style={styles.username}>{user.name}</span>
+          </h2>
+          <p>Ready to sharpen your interview skills and land your dream job?</p>
+        </section>
       )}
 
-      <Hero />
-      <About />
-      <MockInterview />
-      <AITools />
+      {/* 🚀 Hero Section */}
+      {/* Pass link prop to Hero button */}
+      <Hero tryAIHelpLink="/mock-interview" />
 
-      {/* New Section for Resume Upload */}
-      <div style={styles.resumeSection}>
-        <h2 style={styles.title}>Want to Prepare Better?</h2>
-        <p>Upload your resume and get tailored interview questions!</p>
-        <Link to="/upload-resume" style={styles.uploadButton}>
-          Upload Resume
-        </Link>
+      {/* 💼 About Section */}
+      <div style={styles.gradientSection}>
+        <About />
       </div>
 
-      <Testimonial />
+      {/* 🤖 AI Tools Section (unchanged, links to /ai-tools) */}
+      <section style={styles.aiHelpSection}>
+        <div style={styles.aiContent}>
+          <h2>Supercharge Your Prep with AI</h2>
+          <p>
+            Use AI-driven tools to analyze your resume, generate questions,
+            debug your code, and improve your speaking skills — all in one place.
+          </p>
+          <Link to="/ai-tools" style={styles.aiHelpButton}>
+            🚀 Try AI Help
+          </Link>
+        </div>
+      </section>
+
+      {/* 📄 Resume Upload Section */}
+      <section style={styles.resumeSection}>
+        <h2>Want Tailored Interview Questions?</h2>
+        <p>Upload your resume and let AI create job-specific interview questions for you.</p>
+        <Link to="/upload-resume" style={styles.uploadButton}>
+          📤 Upload Resume
+        </Link>
+      </section>
+
+      {/* 💬 Testimonials */}
+      <div style={styles.gradientSection}>
+        <Testimonial />
+      </div>
+
+      {/* 📞 Contact & Footer */}
       <Contact />
       <Footer />
     </>
   );
 };
 
-// Styling for the new section
+// 💅 Modern Styling
 const styles = {
   welcomeSection: {
-    padding: '20px',
-    backgroundColor: '#e0f7fa',
-    textAlign: 'center',
-    marginTop: '80px', // Add margin to avoid overlap with Navbar
-    borderRadius: '10px',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+    background: "linear-gradient(90deg, #007bff, #00c6ff)",
+    color: "#fff",
+    padding: "40px 20px",
+    textAlign: "center",
+    borderBottomLeftRadius: "40px",
+    borderBottomRightRadius: "40px",
+    boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
+    marginBottom: "40px",
+  },
+  username: {
+    color: "#ffeb3b",
+    fontWeight: "700",
+  },
+  gradientSection: {
+    background: "linear-gradient(135deg, #f8f9fa, #e0f7fa)",
+    padding: "40px 0",
+  },
+  aiHelpSection: {
+    background: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",
+    color: "white",
+    textAlign: "center",
+    padding: "80px 20px",
+    borderRadius: "30px",
+    margin: "60px 10%",
+    boxShadow: "0 10px 25px rgba(0, 0, 0, 0.2)",
+  },
+  aiContent: {
+    maxWidth: "700px",
+    margin: "0 auto",
+  },
+  aiHelpButton: {
+    display: "inline-block",
+    background: "white",
+    color: "#2575fc",
+    fontWeight: "bold",
+    padding: "14px 30px",
+    borderRadius: "30px",
+    marginTop: "20px",
+    textDecoration: "none",
+    fontSize: "1.1rem",
+    transition: "all 0.3s ease",
   },
   resumeSection: {
-    padding: '40px',
-    backgroundColor: '#f4f4f4',
-    textAlign: 'center',
-    marginTop: '20px',
-    borderRadius: '10px',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-  },
-  title: {
-    fontSize: '28px',
-    color: '#333',
-    marginBottom: '10px',
+    background: "#f8f9fa",
+    padding: "80px 20px",
+    textAlign: "center",
+    borderRadius: "30px",
+    margin: "40px 10%",
+    boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
   },
   uploadButton: {
-    display: 'inline-block',
-    padding: '12px 24px',
-    backgroundColor: '#4CAF50',
-    color: '#fff',
-    textDecoration: 'none',
-    borderRadius: '5px',
-    fontSize: '16px',
-    fontWeight: 'bold',
-    marginTop: '10px',
-    transition: 'background-color 0.3s ease',
+    display: "inline-block",
+    background: "linear-gradient(135deg, #43e97b, #38f9d7)",
+    color: "#fff",
+    fontWeight: "bold",
+    padding: "14px 30px",
+    borderRadius: "30px",
+    marginTop: "20px",
+    textDecoration: "none",
+    fontSize: "1.1rem",
+    transition: "all 0.3s ease",
   },
 };
 

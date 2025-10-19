@@ -39,7 +39,6 @@ router.post("/analyze", upload.single("resume"), async (req, res) => {
     // ✅ If a resume file is uploaded, extract text properly
     if (req.file) {
       console.log("✅ Resume file received");
-
       try {
         const pdfData = await pdfParse(req.file.buffer);
         jobDescription += `\n\nResume Content:\n${pdfData.text}`;
@@ -68,6 +67,7 @@ router.post("/analyze", upload.single("resume"), async (req, res) => {
       return res.status(500).json({ error: "Failed to generate questions from AI." });
     }
 
+    // Split into lines, trim, and filter out empty lines
     const questions = aiResponse
       .split("\n")
       .map((q) => q.trim())
