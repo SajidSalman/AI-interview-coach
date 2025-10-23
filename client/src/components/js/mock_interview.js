@@ -15,18 +15,15 @@ const MockInterviewPage = () => {
   const [feedbacks, setFeedbacks] = useState({});
 
   const defaultQuestions = [
-    { question: "Tell me about yourself.", tip: "Highlight your strengths." },
-    { question: "What are your strengths and weaknesses?", tip: "Be honest but positive." },
-    { question: "Why should we hire you?", tip: "Show enthusiasm and alignment." },
-    { question: "Describe a challenging project you worked on.", tip: "Focus on problem-solving." },
-    { question: "Where do you see yourself in 5 years?", tip: "Show ambition and growth." },
+    { question: "Tell me about yourself.", answer: "This is a model answer." },
+    { question: "What are your strengths and weaknesses?", answer: "This is a model answer." },
+    { question: "Why should we hire you?", answer: "This is a model answer." },
+    { question: "Describe a challenging project you worked on.", answer: "This is a model answer." },
+    { question: "Where do you see yourself in 5 years?", answer: "This is a model answer." },
   ];
 
   const handleFileChange = (e) => setResumeFile(e.target.files[0]);
 
-  // -------------------------------
-  // Generate questions via Gemini AI
-  // -------------------------------
   const fetchQuestions = async () => {
     if (!jobDescription.trim() || !email.trim() || !resumeFile) {
       return alert("Please enter Job Description, Registered Email, and upload your Resume.");
@@ -42,16 +39,17 @@ const MockInterviewPage = () => {
     try {
       const formData = new FormData();
       formData.append("jobDescription", jobDescription);
-      formData.append("email", email);
+      formData.append("userEmail", email); 
       formData.append("resume", resumeFile);
 
       const res = await axios.post(
-        "http://localhost:5000/api/mock-interview/analyze",
+        "http://localhost:5000/api/gemini/generate",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
-
-      const aiQuestions = res.data.questions || defaultQuestions;
+      
+      const aiQuestions = res.data.qaPairs || defaultQuestions;
+      
       setQuestions(aiQuestions);
 
       aiQuestions.forEach((q, idx) => {
@@ -87,41 +85,59 @@ const MockInterviewPage = () => {
     setLoading(true);
 
     try {
-      const formData = new FormData();
-      Object.entries(answers).forEach(([qid, ans]) => {
-        formData.append(
-          "textAnswers",
-          JSON.stringify({ questionId: qid, text: ans.text || "", mode: ans.mode || "text" })
-        );
-        if (ans.mediaBlob) {
-          const ext = ans.mode === "voice" ? "webm" : "mp4";
-          formData.append("mediaFiles", ans.mediaBlob, `${qid}.${ext}`);
-        }
-      });
+      // (Optional) You can keep this section if you still need to
+      // upload the raw media files (audio/video) to your server for storage.
+      // -----------------------------------------------------------------
+      // const formData = new FormData();
+      // Object.entries(answers).forEach(([qid, ans]) => {
+      //   if (ans.mediaBlob) {
+      //     const ext = ans.mode === "voice" ? "webm" : "mp4";
+      //     formData.append("mediaFiles", ans.mediaBlob, `${qid}.${ext}`);
+      //   }
+      // });
+      // await axios.post(
+      //   "http://localhost:5000/api/mock-interview/submit-answer",
+      //   formData
+      // );
+      // -----------------------------------------------------------------
 
-      const res = await axios.post(
-        "http://localhost:5000/api/mock-interview/submit-answer",
-        formData
-      );
 
-      if (!res.data.success) throw new Error(res.data.error || "Submission failed");
+      // ----- ⬇️ 1. UPDATE: Create the payload for feedback ⬇️ -----
+      // We now send both the question and the answer text for Gemini to review.
+      const feedbackPayload = {
+        answers: Object.entries(answers).map(([qid, ans]) => {
+          // qid is 'q0', 'q1', etc. Get the index.
+          const questionIndex = parseInt(qid.replace('q', ''));
+          const originalQuestion = questions[questionIndex];
 
-      const textAnswersArray = Object.entries(answers).map(([qid, ans]) => ({
-        questionId: qid,
-        text: ans.text || "",
-      }));
+          return {
+            questionId: qid, // e.g., 'q0'
+            questionText: originalQuestion.question, // The original question
+            answerText: ans.text || "" // The user's transcribed answer
+          };
+        })
+      };
+      // ----- ⬆️ 1. UPDATE END ⬆️ -----
 
-      // Fetch feedback via Gemini AI
+
+      // ----- ⬇️ 2. UPDATE: Call the new Gemini feedback endpoint ⬇️ -----
       const feedbackRes = await axios.post(
-        "http://localhost:5000/api/mock-interview/review-answers",
-        { textAnswers: textAnswersArray }
+        "http://localhost:5000/api/gemini/feedback", // Changed from /review-answers
+        feedbackPayload // Send our new payload
       );
+      // ----- ⬆️ 2. UPDATE END ⬆️ -----
 
+
+      // ----- ⬇️ 3. UPDATE: Process the new feedback response ⬇️ -----
+      // The backend will return { feedback: [{ questionId: 'q0', feedback: '...' }] }
       const feedbackObj = {};
-      feedbackRes.data.feedback.forEach(f => (feedbackObj[f.questionId] = f.feedback));
+      feedbackRes.data.feedback.forEach(f => {
+        feedbackObj[f.questionId] = f.feedback;
+      });
+      // ----- ⬆️ 3. UPDATE END ⬆️ -----
 
       setFeedbacks(feedbackObj);
-      setAnswers({});
+      setAnswers({}); // Clear answers after submission
       alert("✅ Answers submitted successfully! Feedback is displayed below each question.");
     } catch (err) {
       console.error(err);
@@ -202,10 +218,16 @@ const MockInterviewPage = () => {
 
                 <AnswerRecorder
                   questionId={qid}
-                  questionText={q.question}
+                  questionText={q.question} 
                   defaultMode="text"
                   onAnswerChange={handleAnswerChange}
                 />
+                
+                {q.answer && (
+                  <div className="model-answer-box">
+                    <strong>Model Answer:</strong> {q.answer}
+                  </div>
+                )}
 
                 {feedbacks[qid] && (
                   <div className="feedback-box">

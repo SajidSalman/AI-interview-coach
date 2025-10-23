@@ -17,6 +17,7 @@ import connectDB from "./config/db.js";
 import mockInterviewRoutes from "./routes/mockInterviewRoutes.js";
 import resumeRoutes from "./routes/resumeRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import geminiRoutes from "./routes/geminiRoutes.js"; // 1. <-- ADD THIS IMPORT
 
 // ---------------------------
 // Utility Fix for __dirname
@@ -42,8 +43,9 @@ connectDB()
 // ---------------------------
 // Ensure Required Directories Exist
 // ---------------------------
-const uploadDir = path.join(__dirname, "uploads");
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+// User confirmed 'uploads' folder was deleted, so this logic is no longer needed.
+// const uploadDir = path.join(__dirname, "uploads");
+// if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
 const pdfDir = path.join(__dirname, "test/data");
 const pdfPath = path.join(pdfDir, "05-versions-space.pdf");
@@ -76,12 +78,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRoutes);
 app.use("/api/mock-interview", mockInterviewRoutes);
 app.use("/api/resume", resumeRoutes);
+app.use("/api/gemini", geminiRoutes); // 2. <-- ADD THIS ROUTE
 
 // ---------------------------
 // Root Test Route
 // ---------------------------
 app.get("/", (req, res) => {
-  res.status(200).json({ message: "🚀 Server running successfully with OpenAI GPT backend!" });
+  res.status(200).json({ message: "🚀 Server running successfully with Gemini AI backend!" });
 });
 
 // ---------------------------
